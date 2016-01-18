@@ -1,5 +1,5 @@
 body {
-  background-color: #9BB2C9;
+  background-color: #E6F8FF;
 }
 
 h1 {
@@ -12,7 +12,7 @@ h1 {
 
 h2 {
   color: black;
-  margin-left: 70px;
+  margin-left: 10%;
   font-family: Ubuntu, sans-serif;
   font-weight: lighter;
 }
@@ -22,6 +22,10 @@ h3 {
   margin-left: 10%;
   font-family: Ubuntu, sans-serif;
   font-weight: lighter;
+}
+
+a {
+  color:
 }
 
 div {
@@ -38,9 +42,9 @@ div {
 }
 
 #header {
-  border:1px solid #bbb;
-  height:80px;
-  padding:10px;
+  height:30px;
+  margin-left:10px;
+  margin-top: 10px;
 }
 #content {
   margin-top:10px;
@@ -51,8 +55,9 @@ div {
 }
 #content-main {
   font-family: Ubuntu, sans-serif;
-  margin-left:100px;
-  width:800px;
+
+  margin-left:15%;
+  width:600px;
 }
 #description {
   font-family: Ubuntu, sans-serif;
@@ -64,15 +69,9 @@ div {
   margin-left:10px;
   width:134px;
 }
-#footer {
-  float:left;
-  margin-top:10px;
-  margin-bottom:10px;
-  padding:10px;
-  border:1px solid #bbb;
-  width:878px;
-}
-#bottom {
-  clear:both;
-  text-align:right;
+#contact-info {
+  font-family: Ubuntu, sans-serif;
+  align:"right"
+  margin-left:80%;
+  font-size:10pt;
 }
