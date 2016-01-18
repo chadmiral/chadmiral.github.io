@@ -1,18 +1,17 @@
 body {
-  background-color: #A63E26;
+  background-color:#332A2F;
   font-family: Ubuntu, sans-serif;
+  margin:0px;
 }
 
 h1 {
-  color: #000000;
-  margin-left: 0px;
-  font-weight: lighter;
-  font-style: italic;
+  color: #332A2F;
+  font-weight: bold;
 }
 
 h2 {
-  color:#F2C572;
-  font-weight: lighter;
+  color: rgba(84,195,255,0.4);
+  font-weight:lighter;
 }
 
 h3 {
@@ -28,11 +27,12 @@ h4 {
 }
 
 a {
-  color:#F2C572;
+  color:#F0EDD5;
+  text-decoration:none;
 }
 
 a:hover {
-  color:#AA58FF;
+  color:#F2C572;
 }
 
 div {
@@ -61,11 +61,10 @@ header, h1 {
 }
 
 .header_wrapper {
-  background-color:#D96F32;
+  background-color: rgba(84,195,255,0.4);
   padding-top:18px;
   padding-bottom:8px;
   padding-left:5px;
-  border-radius:30px;
   height:60px;
 }
 
@@ -75,22 +74,31 @@ header, h1 {
 }
 
 #content-main {
+  margin-top:8px;
   margin-left:100px;
   width:75%;
-  background-color:#D96F32;
-  border-radius:10px;
+  background-color:#ADA892;
+  border-radius:25px;
   padding-left:30px;
   padding-top:8px;
   padding-bottom:8px;
 }
 
 #occupation {
-  color:#E6F8FF;
+  color:#FFFFFF;
+  font-weight:lighter;
+}
+
+#name {
+  color:#FFFFFF;
+  font-size:12pt;
+  font-weight:bold;
 }
 
 .contact-info {
   float: right;
   font-size:10pt;
   padding-right:10px;
+  padding-bottom:10px;
   align-self:"right"
 }
