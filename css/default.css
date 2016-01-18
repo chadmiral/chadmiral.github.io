@@ -1,23 +1,78 @@
 body {
-  background-color: lightblue;
+  background-color: #9BB2C9;
 }
 
 h1 {
-  color: navy;
-  margin-left: 20px;
-  font-family: arial;
+  color: #011901;
+  margin-left: 0px;
+  font-family: Ubuntu, sans-serif;
+  font-weight: lighter;
+  font-style: italic;
 }
 
 h2 {
   color: black;
-  margin-left: 10%;
-  font-family: arial;
+  margin-left: 70px;
+  font-family: Ubuntu, sans-serif;
   font-weight: lighter;
 }
 
 h3 {
   color: black;
   margin-left: 10%;
-  font-family: arial;
+  font-family: Ubuntu, sans-serif;
   font-weight: lighter;
+}
+
+div {
+  border:0px;
+}
+
+#footnote {
+  font-size: 8pt;
+  font-weight: lighter;
+}
+
+#project-name {
+  color: #E6F8FF
+}
+
+#header {
+  border:1px solid #bbb;
+  height:80px;
+  padding:10px;
+}
+#content {
+  margin-top:10px;
+  padding-bottom:10px;
+}
+#content-left {
+  width:180px;
+}
+#content-main {
+  font-family: Ubuntu, sans-serif;
+  margin-left:100px;
+  width:800px;
+}
+#description {
+  font-family: Ubuntu, sans-serif;
+  color: #E6F8FF;
+  font-weight: lighter;
+  font-size: 10pt;
+}
+#content-right {
+  margin-left:10px;
+  width:134px;
+}
+#footer {
+  float:left;
+  margin-top:10px;
+  margin-bottom:10px;
+  padding:10px;
+  border:1px solid #bbb;
+  width:878px;
+}
+#bottom {
+  clear:both;
+  text-align:right;
 }
