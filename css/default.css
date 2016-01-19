@@ -80,6 +80,7 @@ header, h1 {
   background-color:#ADA892;
   border-radius:25px;
   padding-left:30px;
+  padding-right:30px;
   padding-top:8px;
   padding-bottom:8px;
 }
@@ -102,3 +103,7 @@ header, h1 {
   padding-bottom:10px;
   align-self:"right"
 }
+
+.gist {width:75% !important;}
+.gist-file
+.gist-data {max-height: 400px;}

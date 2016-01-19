@@ -6,60 +6,102 @@
   <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Ubuntu:regular,bold&subset=Latin">
 </head>
 <body>
-  <h1>GPUNearestNeighbor</h1>
-  Lately I've been fascinated with Voronoi diagrams, Delaunay triangulations and
-  nearest-neighbor searches. I was working on a project that required fast "nearest
-  neighbor" queries for a point cloud on the surface of the unit sphere, and
-  came up with a method to leverage the GPU.
-  <p>
-  <h2>Method 1: KD-Trees on the CPU</h2>
-  My first thought was to build a
-  <a href = "http://www.alglib.net/other/nearestneighbors.php">KD-tree</a> and
-  query it every frame. This worked well enough, but it was actually pretty slow
-  in my case because the point cloud moved every frame, and thus had to be rebuilt.
-  This resulted in O(nlogn) tree-building time and O(logn) queries.
-  <p>
-  I realized that if I was willing to sacrifice a little bit of accuracy, I could
-  perform a very specialized approximate nearest-neighbor search on the surface
-  of the sphere.
-  <p>
-  <h2>Method 2: Rendering cones to an offscreen texture</h2>
-  I was messing around in Blender and realized that by rendering a set of
-  intersecting cone, when viewed top down with an orthographic projection,
-  the result is the 2D voronoi diagram defined by the points of the cones.
-  <p>
-  <img src="voronoi_anim.gif" align="center">
-  <div id="footnote">fig. 1</div>
-  <p>
-  For our method, we simply need to collect a list of sites and render
-  a right-angled cone at each site, using the color channel to encode the site
-  index.
-  <p>
-  To ensure high-fidelity, we choose the highest resolution depth buffer available
-  and set a very tight depth range to prevent depth-related artifacts. It is also
-  important to disable texture filtering on our render target, as any blurring
-  of the pixels would give us incorrect results for the query.
-  <p>
-  <img src="gpu_voronoi.png">
-  <p>
-  To avoid GPU stalls, we then copy the texture once per frame into system
-  memory so that we may make as many queries as we want without involving the GPU.
-  <div id="footnote">
-    fig. 2<br>
-    The index of the site is encoded into the color of each cell.
+  <div class="header_wrapper">
+    <header>
+      <h1>while(true) { code(); }</h1>
+        <div class="contact-info">
+          <h4 id="name">Chad Foxglove</h4>
+          <br>
+          <h4 id="occupation">FX Artist / Programmer</h4>
+          <br>
+          <a href="chandra.foxglove@gmail.com">chandra.foxglove@gmail.com</a><br>
+          <a href="http://www.github.com/chadmiral">github</a><br>
+        </div>
+    </header>
   </div>
-  The query function is simple. We take as input a 2D point in polar coordinates
-  and convert that into an index into our texture array (which now lives in sytem
-  memory.)
 
-  <script src="https://gist.github.com/chadmiral/fe5fec53cc9372ae15dc.js"></script>
-  <h2>Future Work</h2>
-  The cone rendering loop could be optimized greatly by reducing the number of
-  draw calls. Rather than rendering each cone with a single draw call, I should
-  be building a huge draw call with all my cones.
-  <p>
-  Currently the code doesn't support wrapping along the longitudinal axis, so
-  there will be a "seam" along <i><b>(0, v)</b></i>. This is easily fixed by rendering the cones
-  that intersect the seam twice (offset by a unit to the left or right)
+  <div id="content">
+      <h2 class='brackets'>GPUNearestNeighbor()</h2>
+      <h2 class="brackets">{</h2>
+    <div id="content-main">
+      <h1>The Problem: Fast Nearest-Neighbor Queries on the Unit Sphere</h1>
+      <p>
+      While working on <a href="mundus.html">Mundus()</a> I needed a method to
+      quickly find the nearest site in an irregular grid on the surface of a
+      sphere to an input position.<p>
+      My first thought was to build a
+      <a href = "http://www.alglib.net/other/nearestneighbors.php">KD-tree</a> and
+      query it every frame. This worked well enough, but it was actually pretty slow
+      in my case because the point cloud moved every frame, and thus had to be rebuilt.
+      This resulted in O(nlogn) tree-building time and O(logn) queries.
+      <p>
+      I realized that if I was willing to sacrifice a little bit of accuracy, I could
+      perform a very specialized approximate nearest-neighbor search on the surface
+      of the sphere.
+      <p>
+      <h1>The Solution: Render a Bunch of Cones... wait... what?!</h1><p>
+      It turns out that if you render a right-angled cone at the location of
+      each of the sites in a 2D point cloud, and view it from the top with an orthographic projection,
+      you have actually built an approximate Voronoi diagram.<p>
+      <p>
+      <center>
+        <img src="voronoi_anim.gif" width="400px" height="400px">
+        <div class="footnote">
+          (fig. 1)<br>
+          Color encoded flat-shaded cones create a
+          voronoi diagram when viewed orthographically from above.
+        </div>
+      </center>
+      <p>
+      For our method, we simply need to collect a list of sites and render
+      a right-angled cone at each site, using the color channel to encode the site
+      index.
+      <p>
+      To ensure high-fidelity, we choose the highest resolution depth buffer available
+      and set a very tight depth range to prevent depth-related artifacts. It is also
+      important to disable texture filtering on our render target, as any blurring
+      of the pixels would give us incorrect results for the query.
+      <p>
+      <center>
+        <img src="gpu_voronoi.png" width="400px" height="400px">
+        <div class="footnote">
+          <i>
+            fig. 2<br>
+            The index of the closest site in the point cloud is encoded into the color of each cell.
+          </i>
+        </div>
+      </center>
+      <p>
+      To avoid GPU stalls, we then copy the texture once per frame into system
+      memory so that we may make as many queries as we want without involving the GPU.<p>
+      <p>
+      <center><script src="https://gist.github.com/chadmiral/4328d97e655b140aaca8.js"></script></center>
+      <p>
+      Putting it all together, we use the following function to render our set
+      of cones to a frame buffer texture.
+      <center><script src="https://gist.github.com/chadmiral/46d1548c375d5f4aeee3.js"></script></center>
+      <p>
+      The query function is simple. We take as input a 2D point in polar coordinates
+      and convert that into an index into our texture array (which now lives in sytem
+      memory.)
+      <p>
+
+      <center><script src="https://gist.github.com/chadmiral/fe5fec53cc9372ae15dc.js"></script></center>
+      <h1>Accuracy</h1><p>
+      This is an <i>approximate</i> method, and the accuracy is a product of the
+      resolution used in the render texture, the bit-depth of the depth buffer
+      and the number of segments use to render the cones.
+      </thead>
+      <h1>Future Work</h1><p>
+      The cone rendering loop could be optimized greatly by reducing the number of
+      draw calls. Rather than rendering each cone with a single draw call, I should
+      be building a huge draw call with all my cones.
+      <p>
+      Currently the code doesn't support wrapping along the longitudinal axis, so
+      there will be a "seam" along <i><b>(0, v)</b></i>. This is easily fixed by rendering the cones
+      that intersect the seam twice (offset by a unit to the left or right)
+    </div>
+  </div>
+  <h2 class="brackets">}</h2>
 </body>
 </html>
