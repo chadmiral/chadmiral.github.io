@@ -4,7 +4,7 @@
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/gist-embed/2.4/gist-embed.min.js"></script>
   <link rel="stylesheet" type="text/css" href="../css/default.css">
   <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Ubuntu:regular,bold&subset=Latin">
-  <title>Mundus()</title>
+  <title>GPUHair()</title>
 </head>
 <body>
   <div class="header_wrapper">
@@ -22,17 +22,19 @@
   </div>
 
   <div id="content">
-      <h2 class='brackets'>Mundus()</h2>
+      <h2 class='brackets'>GPUHair()</h2>
       <h2 class="brackets">{</h2>
     <div id="content-main">
       <h1>Description</h1><p>
-      Mundus is a (WIP) project to develop a real-time interactive planet
-      simulation. It is coded entirely from scratch (no middleware engine) in
-      C++, using SDL2 and OpenGL.
+      GPUHair() is a GPU-based physics simulation for hair strands. Because we
+      want to perform the same physics math on a large number of hairs, and is
+      thus a massively parallel computation, the GPU becomes an attractive
+      tool to speed up the simulation.
       <p>
-      <h1>Plate Tectonics</h1><p>
-      Plate tectonics are simulated on the surface of the planet, modeling
-      plate collision, subduction zones, convergence zones, volcanoes, and erosion.
+      <h1>Overview</h1><p>
+      The physics simulation makes use of offscreen render targets to store
+      position data per hair strand, vertex and fragment shaders to perform
+      the physics simulation, and a final rendering pass to render the strands.
     </div>
   </div>
   <h2 class="brackets">}</h2>

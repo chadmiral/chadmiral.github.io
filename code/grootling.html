@@ -4,7 +4,7 @@
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/gist-embed/2.4/gist-embed.min.js"></script>
   <link rel="stylesheet" type="text/css" href="../css/default.css">
   <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Ubuntu:regular,bold&subset=Latin">
-  <title>Mundus()</title>
+  <title>Grootling()</title>
 </head>
 <body>
   <div class="header_wrapper">
@@ -22,17 +22,26 @@
   </div>
 
   <div id="content">
-      <h2 class='brackets'>Mundus()</h2>
+      <h2 class='brackets'>Grootling()</h2>
       <h2 class="brackets">{</h2>
     <div id="content-main">
       <h1>Description</h1><p>
-      Mundus is a (WIP) project to develop a real-time interactive planet
-      simulation. It is coded entirely from scratch (no middleware engine) in
-      C++, using SDL2 and OpenGL.
+      Grootling() is a novel method for giving houseplants a voice and the
+      ability to tweet their most basic needs and deepest desires in a desperate
+      yet pathetic cry for attention.<p>
+      An arduino is connected to a moisture sensor placed in the soil of a
+      potted plant. The arduino logs the incoming soil moisture data, and looks
+      for continued periods of moisture reports below a certain threshold. If
+      the plant appears in peril, or simply needs watering, the arduino connects
+      to the home wi-fi network and sends a signal to a host computer running
+      a Python script. The python script then connects to Twitter and posts
+      a tweet stating the plant's need.
       <p>
-      <h1>Plate Tectonics</h1><p>
-      Plate tectonics are simulated on the surface of the planet, modeling
-      plate collision, subduction zones, convergence zones, volcanoes, and erosion.
+      <h1>Future Work</h1><p>
+      Due to the memory limitations of the arduino, and the need for wi-fi
+      connectivity, a RaspberryPi would be a simpler hardware solution, and
+      would bypass the need for connecting to a host computer, as well as
+      greatly simplify the network code.
     </div>
   </div>
   <h2 class="brackets">}</h2>

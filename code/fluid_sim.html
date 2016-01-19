@@ -1,0 +1,58 @@
+<html>
+<head>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/gist-embed/2.4/gist-embed.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="../css/default.css">
+  <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Ubuntu:regular,bold&subset=Latin">
+  <title>FluidSim()</title>
+</head>
+<body>
+  <div class="header_wrapper">
+    <header>
+      <h1><a class="homelink" href="../index.html">while(true) { code(); }</a></h1>
+        <div class="contact-info">
+          <h4 id="name">Chad Foxglove</h4>
+          <br>
+          <h4 id="occupation">FX Artist / Programmer</h4>
+          <br>
+          <a href="chandra.foxglove@gmail.com">chandra.foxglove@gmail.com</a><br>
+          <a href="http://www.github.com/chadmiral">github</a><br>
+        </div>
+    </header>
+  </div>
+
+  <div id="content">
+      <h2 class='brackets'>FluidSim2D()</h2>
+      <h2 class="brackets">{</h2>
+    <div id="content-main">
+      <h1>Description</h1><p>
+      FluidSim2D() is a 2-dimensional non-compressible fluid simulation that
+      runs on the CPU. OpenGL is used to update a texture with the fluid
+      data and render that texture to the screen.
+      <p>
+      <h1>Overview</h1><p>
+      The physics simulation makes use of offscreen render targets to store
+      position data per hair strand, vertex and fragment shaders to perform
+      the physics simulation, and a final rendering pass to render the strands.
+      <h1>Interactors</h1><p>
+      The fluid simulator stores an array of "Interactor" objects which can
+      affect the simulation in various ways.
+      <p>
+      <h1>Future Work</h1><p>
+      Fluid simulation is an ideal candidate to run on the GPU due to the
+      simulation's parallel nature. The density / velocity channels can easily
+      be stored in floating-point textures, while the advection / diffusion
+      simulation can be implemented in GLSL shaders.
+      <p>
+      Adding support for 3-dimensional fluid simulation would be an easy
+      extrapolation of the current algorithm. The rendering code would need
+      to be altered to support volumetrics.
+      <p>
+      For high-resolution simulations, an offline "bake" and "playback" feature
+      would allow for more realistic simulations that can't be simulated in
+      real-time.
+    </div>
+  </div>
+  <h2 class="brackets">}</h2>
+</body>
+</html>

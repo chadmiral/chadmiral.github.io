@@ -96,6 +96,14 @@ header, h1 {
   font-weight:bold;
 }
 
+.homelink {
+  color:#332A2F;
+}
+
+.homelink:hover {
+  color:#F2C572;
+}
+
 .contact-info {
   float: right;
   font-size:10pt;

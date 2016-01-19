@@ -8,7 +8,7 @@
 <body>
   <div class="header_wrapper">
     <header>
-      <h1>while(true) { code(); }</h1>
+      <h1><a class="homelink" href="../index.html">while(true) { code(); }</a></h1>
         <div class="contact-info">
           <h4 id="name">Chad Foxglove</h4>
           <br>
@@ -30,7 +30,7 @@
       quickly find the nearest site in an irregular grid on the surface of a
       sphere to an input position.<p>
       My first thought was to build a
-      <a href = "http://www.alglib.net/other/nearestneighbors.php">KD-tree</a> and
+      <a href = "https://en.wikipedia.org/wiki/K-d_tree">KD-tree</a> and
       query it every frame. This worked well enough, but it was actually pretty slow
       in my case because the point cloud moved every frame, and thus had to be rebuilt.
       This resulted in O(nlogn) tree-building time and O(logn) queries.
@@ -54,26 +54,40 @@
       </center>
       <p>
       For our method, we simply need to collect a list of sites and render
-      a right-angled cone at each site, using the color channel to encode the site
+      a right-angled cone at each site, using each cone's color to encode the site
       index.
       <p>
-      To ensure high-fidelity, we choose the highest resolution depth buffer available
-      and set a very tight depth range to prevent depth-related artifacts. It is also
-      important to disable texture filtering on our render target, as any blurring
-      of the pixels would give us incorrect results for the query.
+      We use a BGRA format for the render texture, as we don't want to waste
+      any processing time in converting color formats. We will also want to turn
+      off any texture filtering on the render texture so that we don't get blurred
+      borders between voronoi cells (which would introduce error)
+      <center>
+        <script src="https://gist.github.com/chadmiral/9fb3341b5ca867e7574a.js"></script>
+      </center>
       <p>
+      To ensure high-fidelity, we choose the highest resolution depth buffer available
+      and set a very tight depth range to prevent depth-related artifacts.
+      <p>
+      After rendering the cones to an offscreen texture, we get a result like this.
+      To query the nearest neighbor to a point <i><b>(theta, phi)</b></i>, we need
+      only treat the input as <i><b>(u,v)</b></i> coordinates and sample the
+      texture.
+      </thead>
       <center>
         <img src="gpu_voronoi.png" width="400px" height="400px">
         <div class="footnote">
           <i>
             fig. 2<br>
-            The index of the closest site in the point cloud is encoded into the color of each cell.
+            The index of the closest site in the point cloud is encoded into the
+            red channel of each pixel.
           </i>
         </div>
       </center>
       <p>
       To avoid GPU stalls, we then copy the texture once per frame into system
-      memory so that we may make as many queries as we want without involving the GPU.<p>
+      memory so that we may make as many queries as we want without involving the GPU.
+      This can be further optimized by using a double pixel-buffer that can be
+      filled asynchronously.<p>
       <p>
       <center><script src="https://gist.github.com/chadmiral/4328d97e655b140aaca8.js"></script></center>
       <p>
@@ -94,8 +108,8 @@
       </thead>
       <h1>Future Work</h1><p>
       The cone rendering loop could be optimized greatly by reducing the number of
-      draw calls. Rather than rendering each cone with a single draw call, I should
-      be building a huge draw call with all my cones.
+      draw calls. Rather than executing a draw call per cone, we should instead
+      fill a single draw call with as many cones as possible.
       <p>
       Currently the code doesn't support wrapping along the longitudinal axis, so
       there will be a "seam" along <i><b>(0, v)</b></i>. This is easily fixed by rendering the cones
