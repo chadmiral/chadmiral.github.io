@@ -25,11 +25,53 @@
       <h2 class='brackets'>GPUHair()</h2>
       <h2 class="brackets">{</h2>
     <div id="content-main">
-      <h1>Description</h1><p>
+      <h1>Fast Hair Simulation on the GPU</h1><p>
       GPUHair() is a GPU-based physics simulation for hair strands. Because we
       want to perform the same physics math on a large number of hairs, and is
       thus a massively parallel computation, the GPU becomes an attractive
       tool to speed up the simulation.
+      <p>
+      <center>
+        <img src="gpu_hair.gif" width="400px" height="400px">
+        <div class="footnote">
+          <b>fig. 1</b><br>
+          A hairy sphere.
+        </div>
+      </center>
+      <p>
+      <center>
+        <img src="gpu_hair_uvs.png" width="400px" height="50px">
+        <div class="footnote">
+          <b>fig. 2</b><br>
+          We use a 1-dimensional texture to store uv-coordinates for each hair.
+          The red and green channels represent <b><i>(u,v)</i></b> coordinates.
+          The blue channel stores a per-hair height variance, and the alpha
+          channel can be used to store per-hair user data.
+        </div>
+      </center>
+      <p>
+      <center>
+        <img src="gpu_hair_pos.png" width="400px" height="400px">
+        <div class="footnote">
+          <b>fig. 3</b><br>
+          (x,y,z) offsets are stored in the offset texture. Hair id indexes
+          the horizontal axis, while hair segment id indexes the vertical axis.<br>
+          (image contrast enhanced for clarity)
+        </div>
+      </center>
+      <center>
+        <img src="gpu_hair_force.gif" width="400px" height="400px">
+        <div class="footnote">
+          <b>fig. 4</b><br>
+          External forces (wind, attractors, etc) are calculated at the root of
+          each hair in 3D space, then projected onto the surface of
+          the sphere into polar coordinates so they can be stored in a 2D texture.
+          We use the alpha channel to store an animated length multiplier per
+          hair.
+          We use Perlin's simplex noise algorithm (calculated on the CPU) to
+          generate smooth wind.
+        </div>
+      </center>
       <p>
       <h1>Overview</h1><p>
       The physics simulation makes use of offscreen render targets to store
