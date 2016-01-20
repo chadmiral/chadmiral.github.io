@@ -26,9 +26,19 @@
       <h2 class="brackets">{</h2>
     <div id="content-main">
       <h1>Description</h1><p>
-      FluidSim2D() is a 2-dimensional non-compressible fluid simulation that
-      runs on the CPU. OpenGL is used to update a texture with the fluid
-      data and render that texture to the screen.
+      FluidSim2D() is a 2-dimensional incompressible fluid simulation that
+      runs on the CPU. The core algorithm is outlined
+      in
+      <i>
+        <a href="http://www.intpowertechcorp.com/GDC03.pdf">
+          Real-Time Fluid Dynamics for Games.
+          <a href="#footnote1"><sub>1</sub></a>
+        </a>
+      </i>
+      <br>
+      A simple SDL2 and OpenGL framework is used for rendering the resulting
+      fluid grid to the screen.
+
       <center>
         <img src="fluid_sim.gif" width="400px" height="400px">
         <div class="footnote">
@@ -41,10 +51,27 @@
       <h1>Overview</h1><p>
       The physics simulation makes use of offscreen render targets to store
       position data per hair strand, vertex and fragment shaders to perform
-      the physics simulation, and a final rendering pass to render the strands.
+      the physics simulation, and a final rendering pass to render the strands.<p>
+      We extend the algorithm described in the original paper by allowing an
+      arbitrary number of fluid "channels", and by allowing the attachment of
+      "interactor" objects.<p>
+      <center>
+        <img src="fluid_sim_block_diagram.png" width="70%"><p>
+        <div class="footnote">
+          <b>fig. 2</b><br>
+          The core fluid simulation pipeline.
+        </div>
+      </center>
       <h1>Interactors</h1><p>
       The fluid simulator stores an array of "Interactor" objects which can
-      affect the simulation in various ways.
+      affect the simulation in various ways. To date, the following interactors
+      have been implemented.
+      <ul>
+        <li>Inflow - add new density to the fluid grid
+        <li>Outflow - remove density from the fluid grid
+        <li>Turbulence - apply a smooth Simplex Noise turbulence to the fluid grid
+        <li>Angle Snapper - snaps all velocities to discrete angles.
+      </ul>
       <p>
       <h1>Future Work</h1><p>
       Fluid simulation is an ideal candidate to run on the GPU due to the
@@ -59,6 +86,13 @@
       For high-resolution simulations, an offline "bake" and "playback" feature
       would allow for more realistic simulations that can't be simulated in
       real-time.
+      <h1>Source Code</h1><p>
+      <a href="https://github.com/chadmiral/commonlib/tree/master/fluids">fluids (github)</a>
+      <hr>
+      <a name="footnote1"></a>
+      <div class="footnote">
+        1. Real-Time Fluid Dynamics for Games, Jos Stam, Alias | Wavefront.
+      </div>
     </div>
   </div>
   <h2 class="brackets">}</h2>

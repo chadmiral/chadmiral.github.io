@@ -61,7 +61,7 @@ header, h1 {
 }
 
 .header_wrapper {
-  background-color: rgba(84,195,255,0.4);
+  background-color:rgba(84,195,255,0.4);
   padding-top:18px;
   padding-bottom:8px;
   padding-left:5px;
@@ -72,6 +72,7 @@ header, h1 {
   display: inline;
   margin-top:0px;
   padding-top:5px;
+  color:rgba(255, 255, 255, 0.25);
 }
 
 #git-name {

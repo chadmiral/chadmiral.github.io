@@ -26,10 +26,18 @@
       <h2 class="brackets">{</h2>
     <div id="content-main">
       <h1>Fast Hair Simulation on the GPU</h1><p>
-      GPUHair() is a GPU-based physics simulation for hair strands. Because we
-      want to perform the same physics math on a large number of hairs, and is
-      thus a massively parallel computation, the GPU becomes an attractive
-      tool to speed up the simulation.
+      GPUHair() is a GPU hair physics demo, written in
+      C++ and OpenGL. The physics simulation is performed solely on the GPU. (fig. 1)<p>
+      Hair simulation
+      is an ideal candidate for GPU optimization due to the highly parallel
+      nature of the individual hairs. Because each hair requires the same physics
+      computations each frame, we can treat the hairs as texels and leverage
+      the GPU's pixel shaders to do the work in parallel.<p>
+
+      The physics simulation makes use of offscreen render targets to store
+      position data per hair strand. We use vertex and fragment shaders to perform
+      the physics simulation, and a final rendering pass to display the simulated
+      hairs.
       <p>
       <center>
         <img src="gpu_hair.gif" width="400px" height="400px">
@@ -39,44 +47,82 @@
         </div>
       </center>
       <p>
+      We initialize a vertex buffer to store the individual hair geometry, and
+      let the client specify the position of each hair root in <b><i>(x, y, z)</i></b>
+      coordinates. We also initialize 2 textures which store positional offsets
+      for each hair segment.<p>
+      Every frame of the simulation, we use a fragment shader to perform a mass-spring
+      simulation on each hair segment. We use the previous frame's position
+      texture as an input into the shader, perform our physics calculations, then
+      write the new position data to the current frame's position texture. After
+      one frame of simulation, we swap the texture pointers so that we are always
+      reading from the last frame's position data. (fig. 2)
+      <center>
+        <img src="gpu_hair_block_diagram.png" width="60%"><p>
+        <div class="footnote">
+          <b>fig. 2</b><br>
+          The simulation / rendering pipeline.
+        </div>
+      </center>
+      <p>
+      We use a 1-dimensional texture to store uv-coordinates for each hair. (fig. 3)
+      The red and green channels represent <b><i>(u,v)</i></b> coordinates.
+      The blue channel stores a per-hair height variance, and the alpha
+      channel can be used to store per-hair user data.
+      <p>
       <center>
         <img src="gpu_hair_uvs.png" width="400px" height="50px">
         <div class="footnote">
-          <b>fig. 2</b><br>
-          We use a 1-dimensional texture to store uv-coordinates for each hair.
-          The red and green channels represent <b><i>(u,v)</i></b> coordinates.
-          The blue channel stores a per-hair height variance, and the alpha
-          channel can be used to store per-hair user data.
+          <b>fig. 3</b><br>
+          The UV texture stores <b><i>(u, v, height_variance, user_data)</i></b>
+          for each simulated hair.
         </div>
       </center>
       <p>
+      (x,y,z) offsets are stored in the offset texture. Hair id indexes
+      the horizontal axis, while hair segment id indexes the vertical axis.<p>
       <center>
         <img src="gpu_hair_pos.png" width="400px" height="400px">
         <div class="footnote">
-          <b>fig. 3</b><br>
-          (x,y,z) offsets are stored in the offset texture. Hair id indexes
-          the horizontal axis, while hair segment id indexes the vertical axis.<br>
-          (image contrast enhanced for clarity)
-        </div>
-      </center>
-      <center>
-        <img src="gpu_hair_force.gif" width="400px" height="400px">
-        <div class="footnote">
           <b>fig. 4</b><br>
-          External forces (wind, attractors, etc) are calculated at the root of
-          each hair in 3D space, then projected onto the surface of
-          the sphere into polar coordinates so they can be stored in a 2D texture.
-          We use the alpha channel to store an animated length multiplier per
-          hair.
-          We use Perlin's simplex noise algorithm (calculated on the CPU) to
-          generate smooth wind.
+          The previous frame's (x, y, z) offset texture (contrast adjusted for clarity)
         </div>
       </center>
       <p>
-      <h1>Overview</h1><p>
-      The physics simulation makes use of offscreen render targets to store
-      position data per hair strand, vertex and fragment shaders to perform
-      the physics simulation, and a final rendering pass to render the strands.<p>
+      The physics simulation runs per pixel as a fragment shader while rendering a
+      full-screen quad to an off screen texture. We simulate each hair strand as
+      a mass-spring system as follows:
+      <center>
+        <script src="https://gist.github.com/chadmiral/c14c24c75196a941a0d6.js"></script>
+      </center>
+      <p>
+      External forces (wind, attractors, etc) are calculated at the root of
+      each hair in 3D space, then projected onto the surface of
+      the sphere into polar coordinates so they can be stored in a 2D texture.
+      We use the alpha channel to store an animated length multiplier per
+      hair.
+      We use Perlin's simplex noise algorithm (calculated on the CPU) to
+      generate smooth wind, and then unwrap the sphere surface to a square texture.<p>
+      <center>
+        <img src="gpu_hair_force.gif" width="400px" height="400px">
+        <div class="footnote">
+          <b>fig. 5</b><br>
+          The force texture stores the sum of all forces to be applied to the
+          hair, and is updated each frame by the client.
+        </div>
+      </center>
+      <p>
+      The code to fill the force texture is trivial. We simply loop through each pixel
+      in force texture and convert from <b><i>(&theta;, &phi;)</i></b> space to
+      <b><i>(x, y, z)</i></b>. We use the result to sample a 4 dimensional
+      simplex noise function, using <i><b>gametime</b></i> as the 4th dimension.<p>
+      We do this for each color channel, representing a 3 dimensional force vector,
+      and once for the alpha channel to represent a hair length scalar.
+      <center>
+        <script src="https://gist.github.com/chadmiral/01fa45f9a44c004265e5.js"></script>
+      </center>
+
+      <p>
       <h1>Source Code</h1><p>
       <a href="https://github.com/chadmiral/commonlib/blob/master/graphics/include/gpu_hair_sim.h">gpu_hair_sim.h</a><br>
       <a href="https://github.com/chadmiral/commonlib/blob/master/graphics/src/gpu_hair_sim.cpp">gpu_hair_sim.cpp</a><br>
