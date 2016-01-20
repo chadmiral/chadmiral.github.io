@@ -36,16 +36,45 @@
       Mundus is a (WIP) project to develop a real-time interactive planet
       simulation. It is coded entirely from scratch (no middleware engine) in
       C++, using SDL2 and OpenGL.
+      <center>
+        <img src="mundus.gif" width="60%">
+        <div class="footnote">
+          <b>fig. 1</b><br>
+          Mundus Planet Simulator
+        </div>
+      </center>
       <p>
       <h1>Plate Tectonics</h1><p>
       Plate tectonics are simulated on the surface of the planet, modeling
-      plate collision, subduction zones, convergence zones, volcanoes, and erosion.
+      plate collision, subduction zones, volcanoes, and erosion.<p>
+      <center>
+        <img src="tectonics.png" width="60%">
+        <div class="footnote">
+          <b>fig. 1</b><br>
+          Plate Tectonics<p>
+        </div>
+      </center>
+      Height data is stored in a geodesic grid, and is updated every frame by
+      the plate tectonics simulation.
+      As plates crash into each other, one plate is pushed (subducted) under the
+      other and crust is added to the border, building up mountain ranges over time.<p>
+      When plates pull away from each other, a very thin crust is created in the
+      gap, resulting in new oceans, trenches and volcanoes.<p>
+      <center>
+        <img src="tectonics_anim.gif" width="60%">
+        <div class="footnote">
+          <b>fig. 1</b><br>
+          Plate Tectonics<p>
+        </div>
+      </center>
+      Erosion is processed per frame after the tectonics simulation, rounding
+      out the sharp geological features created by plate tectonics.<p>
       <h1>Surface Temperature</h1><p>
       Surface temperature is simulated based on axial-tilt, and orbital period.
       Seasonal variances are apparent, and ice caps form and recede as the
       planet orbits the sun.
       <h1>Biology</h1><p>
-      Life (grass) is simulated per cell as a cellular automaton, and is influenced
+      Life is simulated per cell as a cellular automaton, and is influenced
       by surface temperature, water level and annual sunshine.
       </thead>
     </div>
