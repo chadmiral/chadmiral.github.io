@@ -34,8 +34,9 @@
     <div id="content-main">
       <h1>Description</h1><p>
       Mundus is a (WIP) project to develop a real-time interactive planet
-      simulation. It is coded entirely from scratch (no middleware engine) in
-      C++, using SDL2 and OpenGL.
+      simulation. The simulation and rendering engines were coded entirely from scratch (no middleware engine) in
+      C++, using SDL2 and OpenGL. The simulation engine uses the Euler method, evaluated on multiple layers of geodesic grids.
+      The rendering engine uses OpenGL and GLSL and implements several post process effects such as HDR, bloom, color grading (LUT) and lens flares.
       <center>
         <img src="mundus.gif" width="60%">
         <div class="footnote">
