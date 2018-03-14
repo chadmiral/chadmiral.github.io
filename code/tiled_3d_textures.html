@@ -1,0 +1,12 @@
+Hey, you know what's kind of tricky? Creating a 3D texture that seamlessly tiles on all three axes. A naive approach might be to
+cross-fade a 3D texture along the edges
+
+* crossfade method
+* mirror method
+* 4D torus method for 
+
+				//wrap our cube around the surface a 4D torus to make the sampling tileable
+				float w = (4.0f + (2.0f + cos(a)) * cos(b)) * cos(c);
+				float x = (4.0f + (2.0f + cos(a)) * cos(b)) * sin(c);
+				float y = (2.0f + cos(a)) * sin(b);
+				float z = sin(a);
