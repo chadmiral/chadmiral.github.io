@@ -33,8 +33,14 @@
   <h2 class="brackets">{</h2>
 <div id="content-main">
 	
-Hey, you know what's kind of tricky? Creating a 3D texture that seamlessly tiles on all three axes. A naive approach might be to
-cross-fade a 3D texture along the edges
+Hey, you know what's kind of tricky? Creating a 3D texture that seamlessly tiles on all three axes. Why would we want such a thing,
+you might ask? Well, 3D textures are super useful for real-time VFX. They can be applied using world space coordinates and layered to
+create volumetric effects that aren't dependent on uv coordinates. Unfortunately they come with a significant memory footprint that
+often requires texture tiling in order to achieve an acceptable texel density. Of course, if we're going to tile a texture, we need
+to use methods that create seamless edges in order to avoid rendering artifacts.<p>
+
+<h2>Method 1: Fixing seams by hand using DCC apps</h2>
+A naive approach might be to cross-fade a 3D texture along the edges
 
 <!-
 * crossfade method
